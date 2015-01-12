@@ -102,7 +102,7 @@ $app->register(new Silex\Provider\MonologServiceProvider(), array(
 
 $app->get('/', function() use($app) {
   $app['monolog']->addDebug('logging output.');
-  return 'damiandelcastillo@hotmail.com';
+  return '';
 });
 
 $app->run();
