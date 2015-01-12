@@ -9,18 +9,13 @@
     <script src="js/bootstrap.min.js"></script>
     <script src="js/constants.js"></script>
     <script src="js/actorshalloffame.js"></script>
-
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="css/bootstrap.min.css">
-
     <!-- Optional theme -->
     <link rel="stylesheet" href="css/bootstrap-theme.min.css">
-
     <link rel="stylesheet" href="css/actorshalloffame.css">
-
 </head>
 <body>
-
     <!-- Modal Movies -->
     <div class="modal fade" id="modalMovies" tabindex="-1" role="dialog" aria-labelledby="modalMoviesLabel" aria-hidden="true">
         <div class="modal-dialog modal-md">
@@ -31,7 +26,6 @@
                 </div>
                 <div class="modal-body">
                     <!-- search movies Navigation bar-->
-
                     <div class="navbar navbar-default">
                         <div class="navbar-header">
                             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
@@ -42,8 +36,8 @@
                         </div>
                         <div class="navbar-collapse collapse navbar-responsive-collapse">
                             <form class="navbar-form navbar-left">
-                                <input id="txtMovie" value="life" class="form-control" />
-                                <button onclick="fntFindTitle(txtMovie.value); return false;" class="btn btn-success" title="Find" value="Find">
+                                <input id="txtMovie" value="" placeholder="Movie title" class="form-control" />
+                                <button onclick="fntFindTitle(txtMovie.value); return false;" class="btn btn-success" title="Search title" value="Search title">
                                     Search title
                                 </button>
                             </form>
@@ -51,7 +45,6 @@
                     </div>
                     <!--movies container-->
                     <div id="movieContainer"> </div>
-
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-warning btn-sm" data-dismiss="modal">Close</button>
@@ -59,7 +52,6 @@
             </div>
         </div>
     </div>
-
     <div class="container">
         <div class="page-header" id="banner">
             <div class="row">
@@ -80,9 +72,9 @@
                     <div class="navbar-collapse collapse navbar-responsive-collapse">
                         <form class="navbar-form navbar-left" role="search">
                             <div class="form-group">
-                                <input id="txtActor" value="Bill mu" class="form-control" />
+                                <input id="txtActor" value="" placeholder="Artist name" class="form-control" />
                             </div>
-                            <button onclick="fntFindActor(txtActor.value); return false;" class="btn btn-success" title="Find" value="Find">
+                            <button onclick="fntFindActor(txtActor.value); return false;" class="btn btn-success" title="Search artist" value="Search artist">
                                 Search artist
                             </button>
                         </form>
@@ -98,6 +90,5 @@
             <small>This product uses the TMDb API but is not endorsed or certified by TMDb.</small>
         </p>
     </div>
-
 </body>
 </html>
