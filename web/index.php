@@ -19,6 +19,9 @@ $app->get('/', function() use($app) {
 
 $app->run();
 
+header("Location: index.html");
+die();
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -37,6 +40,8 @@ $app->run();
     <!-- Optional theme -->
     <link rel="stylesheet" href="css/bootstrap-theme.min.css" />
     <link rel="stylesheet" href="css/actorshalloffame.css" />
+    <!--Author: Damian Del Castillo-->
+    <!--damiandelcastillo@hotmail.com, aldacap@gmail.com-->
   </head>
   <body>
     <!-- Modal Movies -->
@@ -51,21 +56,14 @@ $app->run();
           </div>
           <div class="modal-body">
             <!-- search movies Navigation bar-->
-            <div class="navbar navbar-default">
-              <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
-                  <span class="icon-bar"></span>
-                  <span class="icon-bar"></span>
-                  <span class="icon-bar"></span>
-                </button>
-              </div>
-              <div class="navbar-collapse collapse navbar-responsive-collapse">
-                <form class="navbar-form navbar-left">
-                  <input id="txtMovie" value="" placeholder="Movie title" class="form-control" />
-                  <button onclick="fntFindTitle(txtMovie.value); return false;" class="btn btn-success" title="Search title" value="Search title">
+            <div class="navbar navbar-inverse">
+              <div class="input-group">
+                <input id="txtMovie" value="" placeholder="Movie title" class="form-control" />
+                <span class="input-group-btn">
+                  <button id="btnFilterMovies" onclick="fntFindTitle(txtMovie.value); return false;" class="btn btn-success" title="Search title" value="Search title">
                     Search title
                   </button>
-                </form>
+                </span>
               </div>
             </div>
             <!--movies container-->
@@ -79,6 +77,7 @@ $app->run();
     </div>
     <!--Main container-->
     <div class="container">
+      <!--Page header-->
       <div class="page-header old-tv-screen" id="banner">
         <div class="row">
           <div class="col-lg-12 col-md-11 col-sm-10">
@@ -89,26 +88,15 @@ $app->run();
           </div>
         </div>
       </div>
-      <!--artist search navigation bar-->
-      <div class="row">
-        <div class="navbar navbar-default">
-          <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
+      <!--Search Artist navigation bar-->
+      <div class="navbar navbar-inverse">
+        <div class="input-group">
+          <input id="txtActor" value="" placeholder="Artist name" class="form-control" />
+          <span class="input-group-btn">
+            <button id="btnSearchArtist" onclick="fntFindActor(txtActor.value); return false;" data-searching-text="Searching..." class="btn btn-success" title="Search artist">
+              Search artist
             </button>
-          </div>
-          <div class="navbar-collapse collapse navbar-responsive-collapse">
-            <form class="navbar-form navbar-left" role="search">
-              <div class="form-group">
-                <input id="txtActor" value="" placeholder="Artist name" class="form-control" />
-              </div>
-              <button onclick="fntFindActor(txtActor.value); return false;" class="btn btn-success" title="Search artist" value="Search artist">
-                Search artist
-              </button>
-            </form>
-          </div>
+          </span>
         </div>
       </div>
       <!--artists list-->
