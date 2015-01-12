@@ -14,7 +14,7 @@ $app->register(new Silex\Provider\MonologServiceProvider(), array(
 
 $app->get('/', function() use($app) {
   $app['monolog']->addDebug('logging output.');
-  //return 'Hello';
+  return 'damiandelcastillo@hotmail.com';
 });
 
 $app->run();
@@ -26,6 +26,7 @@ $app->run();
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta charset="utf-8" />
     <title>Actor’s hall of fame</title>
+    <link rel="shortcut icon" href="img/film.ico" />
     <script src="js/jquery-2.1.3.min.js"></script>
     <!-- Latest compiled and minified JavaScript bootstrap -->
     <script src="js/bootstrap.min.js"></script>
@@ -76,6 +77,7 @@ $app->run();
         </div>
       </div>
     </div>
+    <!--Main container-->
     <div class="container">
       <div class="page-header old-tv-screen" id="banner">
         <div class="row">
@@ -87,7 +89,7 @@ $app->run();
           </div>
         </div>
       </div>
-
+      <!--artist search navigation bar-->
       <div class="row">
         <div class="navbar navbar-default">
           <div class="navbar-header">
@@ -109,10 +111,10 @@ $app->run();
           </div>
         </div>
       </div>
-
       <!--artists list-->
       <div id="artistContainer">
       </div>
+      <!--API rights-->
       <p>
         <img src="img/var_1_0_PoweredByTMDB_Blk_Antitled.png" class="img-thumbnail" width="200" />
         <small>This product uses the TMDb API but is not endorsed or certified by TMDb.</small>
