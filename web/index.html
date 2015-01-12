@@ -10,10 +10,10 @@
     <script src="js/constants.js"></script>
     <script src="js/actorshalloffame.js"></script>
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
     <!-- Optional theme -->
-    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="css/actorshalloffame.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css" />
+    <link rel="stylesheet" href="css/actorshalloffame.css" />
 </head>
 <body>
     <!-- Modal Movies -->
@@ -53,35 +53,37 @@
         </div>
     </div>
     <div class="container">
-        <div class="page-header" id="banner">
+        <div class="page-header old-tv-screen" id="banner">
             <div class="row">
                 <div class="col-lg-12 col-md-11 col-sm-10">
-                    <h1>Actor’s hall of fame. <small>The place where all artists want to be</small> </h1>
+                    <h1 class="night-hotel">Actor’s hall of fame. <br /><small>The place where all artists want to be</small> </h1>
                     <p class="lead">Search for your favorite artist and discover in what movies has been</p>
                 </div>
             </div>
-            <div class="row">
-                <div class="navbar navbar-default">
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
+        </div>
+
+        <div class="row">
+            <div class="navbar navbar-default">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div class="navbar-collapse collapse navbar-responsive-collapse">
+                    <form class="navbar-form navbar-left" role="search">
+                        <div class="form-group">
+                            <input id="txtActor" value="" placeholder="Artist name" class="form-control" />
+                        </div>
+                        <button onclick="fntFindActor(txtActor.value); return false;" class="btn btn-success" title="Search artist" value="Search artist">
+                            Search artist
                         </button>
-                    </div>
-                    <div class="navbar-collapse collapse navbar-responsive-collapse">
-                        <form class="navbar-form navbar-left" role="search">
-                            <div class="form-group">
-                                <input id="txtActor" value="" placeholder="Artist name" class="form-control" />
-                            </div>
-                            <button onclick="fntFindActor(txtActor.value); return false;" class="btn btn-success" title="Search artist" value="Search artist">
-                                Search artist
-                            </button>
-                        </form>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
+
         <!--artists list-->
         <div id="artistContainer">
         </div>
