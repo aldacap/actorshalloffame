@@ -1,0 +1,18 @@
+﻿body {
+    background-image: url("../img/video.png");
+    background-repeat: repeat-y;
+    background-position: top left;
+    background-attachment: fixed;
+}
+
+.page-header {
+    background-image: url("../img/cinema.jpg");
+    background-repeat: repeat-x;
+    background-position: bottom left;
+}
+
+.container {
+    background-image: url("../img/film.png");
+    background-repeat: repeat-y;
+    background-position: top right;
+}
