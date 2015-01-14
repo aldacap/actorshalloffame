@@ -18,7 +18,7 @@
     <!--Author: Damian Del Castillo-->
     <!--damiandelcastillo@hotmail.com, aldacap@gmail.com-->
 </head>
-<body>
+<body onload="initPage();">
     <!-- Modal Movies -->
     <div class="modal fade" id="modalMovies" tabindex="-1" role="dialog" aria-labelledby="modalMoviesLabel" aria-hidden="true">
         <div class="modal-dialog modal-md">
@@ -31,7 +31,7 @@
                     <!-- search movies Navigation bar-->
                     <div class="navbar navbar-inverse">
                         <div class="input-group">
-                            <input id="txtMovie" value="" placeholder="Movie title" class="form-control" />
+                            <input id="txtMovie" value="" placeholder="Movie title" class="form-control" autofocus />
                             <span class="input-group-btn">
                                 <button id="btnFilterMovies" onclick="fntFindTitle(txtMovie.value); return false;" class="btn btn-success" title="Search title" value="Search title">
                                     Search title
@@ -59,23 +59,26 @@
                 </div>
             </div>
         </div>
+
         <!--Search Artist navigation bar-->
-        <div class="navbar navbar-inverse">
-            <div class="input-group">
-                <input id="txtActor" value="" placeholder="Artist name" class="form-control" />
-                <span class="input-group-btn">
-                    <button id="btnSearchArtist" onclick="fntFindActor(txtActor.value); return false;" data-searching-text="Searching..." class="btn btn-success" title="Search artist">
-                        Search artist
-                    </button>
-                </span>
-            </div>
+        <div class="input-group">
+            <span class="input-group-addon">
+                Include movies
+                <input id="chkIncludeMovies" type="checkbox" aria-label="Only Actors">
+            </span>
+            <input id="txtActor" value="" placeholder="Artist name" class="form-control" onkeyup="evalEnterKey(this);" autofocus />
+            <span class="input-group-btn">
+                <button id="btnSearchArtist" onclick="fntFindActor(txtActor.value); return false;" data-searching-text="Searching..." class="btn btn-success" title="Search artist">
+                    Search artist or movies
+                </button>
+            </span>
         </div>
         <!--artists list-->
         <div id="artistContainer">
         </div>
         <!--API rights-->
-        <p>
-            <img src="img/var_1_0_PoweredByTMDB_Blk_Antitled.png" class="img-thumbnail" width="200" />
+        <p class="api-rights">
+            <img src="img/var_6_0_tmdb-logo-1Line-GreenGradient-Shadow-Bree.png" class="img-thumbnail" width="200" />
             <small>This product uses the TMDb API but is not endorsed or certified by TMDb.</small>
         </p>
     </div>

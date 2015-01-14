@@ -1,7 +1,19 @@
-// Global variables
+﻿// Global variables
 var results = [];
 var artistList = [];
 var moviesList = [];
+
+// first actions after load page
+function initPage() {
+    $("#txtActor").focus();
+}
+
+// begin query search on enter
+function evalEnterKey(obj) {
+    if (event.keyCode == 13) {
+        $("#btnSearchArtist").click();
+    }
+}
 
 // ordering functions 
 // order an objet in array by date
@@ -26,35 +38,59 @@ function findById(array, value) {
     return false;
 }
 
-// retrieve the list of actors in database by name
-function fntFindActor(strActor) {
+// retrieve the list of actors and movies in database by name
+function fntFindActor(strFilter) {
     // reset controls states
     var $btn = $('#btnSearchArtist').button('searching');
     $("#artistContainer").empty();
     artistList = [];
 
-    // controll de ajax request
-    var processEnded = 0;
+    strFilter = strFilter.replace(/[^a-zA-Z ]/g, "");
 
-    for (var p = 0; p < 5; p++) {
-        $.getJSON("https://api.themoviedb.org/3/search/person?api_key=b03963ee7a5e2836bf673677c6bcddd8&query=" + strActor + "&page=" + p, function (data, textStatus, jqxhr) {
+    if (strFilter) {
+        // controll de ajax request
+        var currentPage = 1;
+        var totalPages = 100;
+        while (currentPage <= totalPages) {
 
-            for (var i = 0; i < data.results.length; i++) {
-                if (!findById(artistList, data.results[i]))
-                    artistList.push(data.results[i]);
-            }
-            processEnded++;
+            var qry = qrySearchMulti.replace('{text}', strFilter);
+            qry = qry.replace('{page}', currentPage);
 
-            if (processEnded == 4) {
-                artistList = artistList.sort(orderByName);
-                for (var i = 0; i < artistList.length; i++) {
-                    $('#artistContainer').append(configRowArtist(artistList[i]));
+            $.ajaxSetup({
+                async: false
+            });
+
+            $.getJSON(qry, function (data, textStatus, jqxhr) {
+                totalPages = data.total_pages;
+                for (var i = 0; i < data.results.length; i++) {
+
+                    // only include movies and people
+                    if (data.results[i].media_type == "person" | (data.results[i].media_type == "movie" && $('#chkIncludeMovies').is(':checked')))
+                        if (!findById(artistList, data.results[i]))
+                            artistList.push(data.results[i]);
                 }
+            });
 
-                $btn.button('reset');
-            }
+            currentPage++;
+        }
+
+        $.ajaxSetup({
+            async: true
         });
+
+        artistList = artistList.sort(orderByName);
+        for (var i = 0; i < artistList.length; i++) {
+
+            if (artistList[i].media_type == "person")
+                $('#artistContainer').append(configRowArtist(artistList[i]));
+            else if (artistList[i].media_type == "movie")
+                $('#artistContainer').append(configRowMovie(artistList[i]));
+
+        }
     }
+
+    $btn.button('reset');
+
     return false;
 };
 
@@ -80,7 +116,34 @@ function configRowArtist(objArtist) {
     rowArtist = rowArtist.replace('{description}', strKnown.substring(0, strKnown.lastIndexOf(",")));
     rowArtist = rowArtist.replace('{id}', objArtist.id);
 
+    // regex to replace all names
+    var pattern = "{name}";
+    re = new RegExp(pattern, "g");
+    var infoArtist = lnkArtist.replace(re, objArtist.name);
+    infoArtist = infoArtist.replace('{content}', 'loading ...');
+
+    pattern = "{id}";
+    re = new RegExp(pattern, "g");
+    infoArtist = infoArtist.replace(re, objArtist.id);
+    rowArtist = rowArtist.replace('{lnk}', infoArtist);
+
     return rowArtist;
+}
+
+// search the actor biography and whow it in a popover
+function fntShowPopover(id) {
+    $.getJSON(qryPersonById.replace('{id}', id), function (data, textStatus, jqxhr) {
+        $('a#lnk_' + id).attr("data-content", data.biography);
+        $('a#lnk_' + id).popover("show");
+    });
+}
+
+// search the movie overview and show it in a popover
+function fntShowMoviePopover(id) {
+    $.getJSON(qryMovieByID.replace('{id}', id), function (data, textStatus, jqxhr) {
+        $('a#lnk_' + id).attr("data-content", data.overview);
+        $('a#lnk_' + id).popover("show");
+    });
 }
 
 // config the actors movies
@@ -92,6 +155,17 @@ function configRowMovie(objMovie) {
 
     rowMovie = rowMovie.replace('{name}', objMovie.title);
     rowMovie = rowMovie.replace('{description}', objMovie.release_date);
+
+    // regex to replace all names
+    var pattern = "{name}";
+    re = new RegExp(pattern, "g");
+    var infoMovie = lnkMovie.replace(re, objMovie.title);
+    infoMovie = infoMovie.replace('{content}', 'loading ...');
+
+    pattern = "{id}";
+    re = new RegExp(pattern, "g");
+    infoMovie = infoMovie.replace(re, objMovie.id);
+    rowMovie = rowMovie.replace('{lnk}', infoMovie);
 
     return rowMovie;
 }

@@ -1,6 +1,7 @@
 ﻿body {
-    background-image: url("../img/video.png");
-    background-repeat: repeat-y;
+    background-size: 100% auto; /* width and height, can be %, px or whatever. */
+    background-image: url("../img/production.jpg");
+    /*background-repeat: repeat-y;*/
     background-position: top left;
     background-attachment: fixed;
 }
@@ -12,7 +13,7 @@
 }
 
 .container {
-    background-image: url("../img/film.png");
+    /*background-image: url("../img/film.png");*/
     background-repeat: repeat-y;
     background-position: top right;
 }
@@ -64,7 +65,7 @@
     text-align: center;
     -o-text-overflow: ellipsis;
     text-overflow: ellipsis;
-    text-shadow: 0 0 10px rgb(255,255,255), 0 0 20px rgb(255,255,255), 0 0 30px rgb(255,255,255), 0 0 40px rgb(255,17,119), 0 0 70px rgb(255,17,119), 0 0 80px rgb(255,17,119), 0 0 100px rgb(255,17,119), 0 0 150px rgb(255,17,119);
+    text-shadow: 0 0 5px rgb(255,255,255), 0 0 5px rgb(255,255,255), 0 0 10px rgb(255,255,255), 0 0 20px rgb(255,17,119), 0 0 15px rgb(255,17,119), 0 0 20px rgb(255,17,119), 0 0 50px rgb(255,17,119), 0 0 75px rgb(255,17,119);
     -webkit-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1) 10ms;
     -moz-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1) 10ms;
     -o-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1) 10ms;
@@ -72,5 +73,58 @@
 }
 
     .night-hotel:hover {
-        text-shadow: 0 0 5px rgb(255,255,255), 0 0 10px rgb(255,255,255), 0 0 15px rgb(255,255,255), 0 0 20px rgb(255,17,119), 0 0 35px rgb(255,17,119), 0 0 40px rgb(255,17,119), 0 0 50px rgb(255,17,119), 0 0 75px rgb(255,17,119);
+        text-shadow: 0 0 10px rgb(255,255,255), 0 0 20px rgb(255,255,255), 0 0 30px rgb(255,255,255), 0 0 40px rgb(255,17,119), 0 0 70px rgb(255,17,119), 0 0 80px rgb(255,17,119), 0 0 100px rgb(255,17,119), 0 0 150px rgb(255,17,119);
+    }
+
+
+.api-rights {
+    margin-top: 20px;
+    padding-top: 10px;
+    background: #232323;
+}
+
+.artist-row {
+    margin: 5px;
+    padding: 10px;
+    background: #232323;
+    margin: 20px;
+    /*border: 1px solid rgba(255,17,119,0.5);*/
+    padding: 10px;
+}
+
+    .artist-row a {
+        cursor: pointer;
+    }
+
+    .artist-row:hover {
+        -moz-box-shadow: 5px 5px 5px rgba(255,17,119,0.5);
+        -webkit-box-shadow: 5px 5px 5px rgba(255,17,119,0.5);
+        box-shadow: 5px 5px 5px rgba(255,17,119,0.5);
+    }
+
+    .artist-row img {
+        width: 128px;
+    }
+
+.movie-row {
+    margin: 5px;
+    padding: 10px;
+    background: #7A8288;
+    margin: 20px;
+    /*border: 1px solid #b6ff00;*/
+    padding: 10px;
+}
+
+    .movie-row a {
+        cursor: pointer;
+    }
+
+    .movie-row:hover {
+        -moz-box-shadow: 5px 5px 5px #0672B0;
+        -webkit-box-shadow: 5px 5px 5px #0672B0;
+        box-shadow: 5px 5px 5px #0672B0;
+    }
+
+    .movie-row img {
+        width: 128px;
     }
