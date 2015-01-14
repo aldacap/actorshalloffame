@@ -45,49 +45,48 @@ function fntFindActor(strFilter) {
     $("#artistContainer").empty();
     artistList = [];
 
-    strFilter = strFilter.replace(/[^a-zA-Z ]/g, "");
+    //strFilter = strFilter.replace(/[^a-zA-Z ]/g, "");
 
-    if (strFilter) {
-        // controll de ajax request
-        var currentPage = 1;
-        var totalPages = 100;
-        while (currentPage <= totalPages) {
+    // if (strFilter) {
+    // controll de ajax request
+    var currentPage = 1;
+    var totalPages = 100;
+    while (currentPage <= totalPages) {
 
-            var qry = qrySearchMulti.replace('{text}', strFilter);
-            qry = qry.replace('{page}', currentPage);
-
-            $.ajaxSetup({
-                async: false
-            });
-
-            $.getJSON(qry, function (data, textStatus, jqxhr) {
-                totalPages = data.total_pages;
-                for (var i = 0; i < data.results.length; i++) {
-
-                    // only include movies and people
-                    if (data.results[i].media_type == "person" | (data.results[i].media_type == "movie" && $('#chkIncludeMovies').is(':checked')))
-                        if (!findById(artistList, data.results[i]))
-                            artistList.push(data.results[i]);
-                }
-            });
-
-            currentPage++;
-        }
+        var qry = qrySearchMulti.replace('{text}', strFilter);
+        qry = qry.replace('{page}', currentPage);
 
         $.ajaxSetup({
-            async: true
+            async: false
         });
 
-        artistList = artistList.sort(orderByName);
-        for (var i = 0; i < artistList.length; i++) {
+        $.getJSON(qry, function (data, textStatus, jqxhr) {
+            totalPages = data.total_pages;
+            for (var i = 0; i < data.results.length; i++) {
 
-            if (artistList[i].media_type == "person")
-                $('#artistContainer').append(configRowArtist(artistList[i]));
-            else if (artistList[i].media_type == "movie")
-                $('#artistContainer').append(configRowMovie(artistList[i]));
-
-        }
+                // only include movies and people
+                if (data.results[i].media_type == "person" | (data.results[i].media_type == "movie" && $('#chkIncludeMovies').is(':checked')))
+                    if (!findById(artistList, data.results[i]))
+                        artistList.push(data.results[i]);
+            }
+            currentPage++;
+        });
     }
+
+    $.ajaxSetup({
+        async: true
+    });
+
+    artistList = artistList.sort(orderByName);
+    for (var i = 0; i < artistList.length; i++) {
+
+        if (artistList[i].media_type == "person")
+            $('#artistContainer').append(configRowArtist(artistList[i]));
+        else if (artistList[i].media_type == "movie")
+            $('#artistContainer').append(configRowMovie(artistList[i]));
+
+    }
+    //}
 
     $btn.button('reset');
 
