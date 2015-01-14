@@ -42,19 +42,15 @@ function findById(array, value) {
 function fntFindActor(strFilter) {
 
     // reset controls states
-    var $btn = $('#btnSearchArtist').button('searching');
+    var $btn = $('#btnSearchArtist').button('loading');
 
     $("#artistContainer").empty();
     artistList = [];
 
     strFilter = strFilter.replace(/[^a-zA-Z ]/g, "");
 
-    //alert('Searching...');
-
-    var w = window.open('', '', 'width=100,height=100');
-    w.document.write('Searching...');
-    w.focus();
-    setTimeout(function () { w.close(); }, 2000);
+    $('#alertSearch').show();
+    setTimeout(null, 1000);
 
     if (strFilter) {
         // controll de ajax request
@@ -80,8 +76,6 @@ function fntFindActor(strFilter) {
                 }
                 currentPage++;
             });
-
-            // setTimeout(null, 100);
         }
 
         $.ajaxSetup({
@@ -100,6 +94,8 @@ function fntFindActor(strFilter) {
     }
 
     $btn.button('reset');
+
+    $('#alertSearch').hide();
 
     return false;
 };
