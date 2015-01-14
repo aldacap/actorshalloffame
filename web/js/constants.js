@@ -8,5 +8,5 @@ var lnkArtist = "<a id='lnk_{id}' onclick='fntShowPopover({id});' tabindex='0' d
 var lnkMovie = "<a id='lnk_{id}' onclick='fntShowMoviePopover({id});' tabindex='0' data-toggle='popover' data-trigger='focus' title='{name}' data-content='{content}'>{name}</a>";
 
 var qryPersonById = "https://api.themoviedb.org/3/person/{id}?api_key=b03963ee7a5e2836bf673677c6bcddd8";
-var qryMovieByID = "http://api.themoviedb.org/3/movie/{id}?api_key=b03963ee7a5e2836bf673677c6bcddd8";
-var qrySearchMulti = "http://api.themoviedb.org/3/search/multi?api_key=b03963ee7a5e2836bf673677c6bcddd8&query={text}&page={page}";
+var qryMovieByID = "https://api.themoviedb.org/3/movie/{id}?api_key=b03963ee7a5e2836bf673677c6bcddd8";
+var qrySearchMulti = "https://api.themoviedb.org/3/search/multi?api_key=b03963ee7a5e2836bf673677c6bcddd8&query={text}&page={page}";
