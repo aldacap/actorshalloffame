@@ -19,6 +19,12 @@
     <!--damiandelcastillo@hotmail.com, aldacap@gmail.com-->
 </head>
 <body onload="initPage();">
+
+    <div id="alertSearch" class="alert alert-success alert-dismissible collapse" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <strong>Searching!</strong> Please wait.
+    </div>
+
     <!-- Modal Movies -->
     <div class="modal fade" id="modalMovies" tabindex="-1" role="dialog" aria-labelledby="modalMoviesLabel" aria-hidden="true">
         <div class="modal-dialog modal-md">
@@ -68,7 +74,7 @@
             </span>
             <input id="txtActor" value="" placeholder="Artist name" class="form-control" onkeyup="evalEnterKey(this);" autofocus />
             <span class="input-group-btn">
-                <button id="btnSearchArtist" onclick="fntFindActor(txtActor.value); return false;" data-searching-text="Searching..." class="btn btn-success" title="Search artist">
+                <button id="btnSearchArtist" onclick="fntFindActor(txtActor.value); return false;" data-loading-text="Loading..." class="btn btn-success" title="Search artist">
                     Search artist or movies
                 </button>
             </span>
@@ -84,7 +90,6 @@
     </div>
 </body>
 </html>
-
 
 <?php
 
