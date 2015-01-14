@@ -40,12 +40,21 @@ function findById(array, value) {
 
 // retrieve the list of actors and movies in database by name
 function fntFindActor(strFilter) {
+
     // reset controls states
     var $btn = $('#btnSearchArtist').button('searching');
+
     $("#artistContainer").empty();
     artistList = [];
 
     strFilter = strFilter.replace(/[^a-zA-Z ]/g, "");
+
+    //alert('Searching...');
+
+    var w = window.open('', '', 'width=100,height=100');
+    w.document.write('Searching...');
+    w.focus();
+    setTimeout(function () { w.close(); }, 2000);
 
     if (strFilter) {
         // controll de ajax request
@@ -66,11 +75,13 @@ function fntFindActor(strFilter) {
 
                     // only include movies and people
                     if (data.results[i].media_type == "person" | (data.results[i].media_type == "movie" && $('#chkIncludeMovies').is(':checked')))
-                        if (!findById(artistList, data.results[i]))
+                        if (!findById(artistList, data.results[i].id))
                             artistList.push(data.results[i]);
                 }
                 currentPage++;
             });
+
+            // setTimeout(null, 100);
         }
 
         $.ajaxSetup({
