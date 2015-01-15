@@ -96,7 +96,7 @@ function fntFindActor(strFilter) {
     return false;
 };
 
-
+// Main search function
 function searhArtistOrMovies(strFilter) {
     if (strFilter) {
 

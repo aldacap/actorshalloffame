@@ -20,15 +20,10 @@
 </head>
 <body onload="initPage();">
 
-    <div id="alertSearch" class="alert alert-success alert-dismissible collapse" role="alert">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <strong>Searching!</strong> Please wait.
-    </div>
-
     <!-- Modal Movies -->
     <div class="modal fade" id="modalMovies" tabindex="-1" role="dialog" aria-labelledby="modalMoviesLabel" aria-hidden="true">
-        <div class="modal-dialog modal-md">
-            <div class="modal-content">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content movie-row">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="modalMoviesLabel">Actor’s movies</h4>
@@ -65,7 +60,6 @@
                 </div>
             </div>
         </div>
-
         <!--Search Artist navigation bar-->
         <div class="input-group">
             <span class="input-group-addon">
@@ -82,14 +76,21 @@
         <!--artists list-->
         <div id="artistContainer">
         </div>
-        <!--API rights-->
-        <p class="api-rights">
-            <img src="img/var_6_0_tmdb-logo-1Line-GreenGradient-Shadow-Bree.png" class="img-thumbnail" width="200" />
-            <small>This product uses the TMDb API but is not endorsed or certified by TMDb.</small>
-        </p>
     </div>
+    <!--api rights footer-->
+    <footer id="footer" class="footer">
+        <div class="container">
+            <div class="api-rights">
+                <p><img src="img/var_6_0_tmdb-logo-1Line-GreenGradient-Shadow-Bree.png" class="img-thumbnail" width="200" />This product uses the TMDb API but is not endorsed or certified by TMDb.</p>
+            </div>
+        </div>
+    </footer>
+    <!--go to top button-->
+    <a href="#" class="scrollToTop">Scroll To Top</a>
+
 </body>
 </html>
+
 
 <?php
 
