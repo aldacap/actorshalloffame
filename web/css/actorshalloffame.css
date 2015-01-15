@@ -78,14 +78,31 @@
 
 
 .api-rights {
-    margin-top: 20px;
-    padding-top: 10px;
+    margin: 5px;
+    padding: 5px;
     background: #232323;
+    /*width: 100%;*/
+    /*position: fixed;*/
+    /*left: 0;
+    right: 0;*/
+    bottom: 0;
+    /*height: 50px;*/
+    /*width: 100%;*/
+    border-radius: 3px;
+}
+
+.footer {
+    /*position: absolute;*/
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    height: 60px;
+    /*background-color: #232323;*/
 }
 
 .artist-row {
-    margin: 5px;
-    padding: 10px;
+    margin: 2px;
+    padding: 5px;
     background: #232323;
     margin: 20px;
     /*border: 1px solid rgba(255,17,119,0.5);*/
@@ -97,9 +114,9 @@
     }
 
     .artist-row:hover {
-        -moz-box-shadow: 5px 5px 5px rgba(255,17,119,0.5);
-        -webkit-box-shadow: 5px 5px 5px rgba(255,17,119,0.5);
-        box-shadow: 5px 5px 5px rgba(255,17,119,0.5);
+        -moz-box-shadow: 0 0 10px rgba(255,17,119,0.5);
+        -webkit-box-shadow: 0 0 10px rgba(255,17,119,0.5);
+        box-shadow: 0 0 10px rgba(255,17,119,0.5);
     }
 
     .artist-row img {
@@ -107,9 +124,9 @@
     }
 
 .movie-row {
-    margin: 5px;
-    padding: 10px;
-    background: #7A8288;
+    margin: 2px;
+    padding: 5px;
+    background: #232323;
     margin: 20px;
     /*border: 1px solid #b6ff00;*/
     padding: 10px;
@@ -120,11 +137,31 @@
     }
 
     .movie-row:hover {
-        -moz-box-shadow: 5px 5px 5px #0672B0;
-        -webkit-box-shadow: 5px 5px 5px #0672B0;
-        box-shadow: 5px 5px 5px #0672B0;
+        -moz-box-shadow: 0 0 10px #0672B0;
+        -webkit-box-shadow: 0 0 10px #0672B0;
+        box-shadow: 0 0 10px #0672B0;
     }
 
     .movie-row img {
         width: 128px;
+    }
+
+.scrollToTop {
+    width: 130px;
+    height: 130px;
+    padding: 10px;
+    text-align: center;
+    background: whiteSmoke;
+    font-weight: bold;
+    color: #444;
+    text-decoration: none;
+    position: fixed;
+    top: 75px;
+    right: 40px;
+    display: none;
+    background: url('../img/up_circular.png') no-repeat 0px 20px;
+}
+
+    .scrollToTop:hover {
+        text-decoration: none;
     }

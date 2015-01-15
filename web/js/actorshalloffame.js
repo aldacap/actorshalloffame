@@ -1,16 +1,61 @@
 ﻿// Global variables
 var results = [];
-var artistList = [];
-var moviesList = [];
+var globalArtistList = [];
+var globalMoviesList = [];
 
-// first actions after load page
+// pagging variables
+var globalCurrentPage = 1;
+var globalTotalPages = 2;
+
+// first actions after page load
 function initPage() {
     $("#txtActor").focus();
+
+    var footerHeight = 0,
+          footerTop = 0,
+          $footer = $("#footer");
+
+    // move footer to bottom page
+    positionFooter();
+    function positionFooter() {
+        footerHeight = $footer.height();
+        footerTop = ($(window).scrollTop() + $(window).height() - footerHeight) + "px";
+        if (($(document.body).height() + footerHeight) < $(window).height()) {
+            $footer.css({
+                position: "absolute"
+            }).animate({
+                top: footerTop
+            })
+        } else {
+            $footer.css({
+                position: "static"
+            })
+        }
+    }
+    $(window)
+            .scroll(positionFooter)
+            .resize(positionFooter);
+
+    //Check to see if the window is top if not then display button
+    $(window).scroll(function () {
+        if ($(this).scrollTop() > 100) {
+            $('.scrollToTop').fadeIn();
+        } else {
+            $('.scrollToTop').fadeOut();
+        }
+    });
+
+    //Click event to scroll to top
+    $('.scrollToTop').click(function () {
+        $('html, body').animate({ scrollTop: 0 }, 800);
+        return false;
+    });
+
 }
 
 // begin query search on enter
 function evalEnterKey(obj) {
-    if (event.keyCode == 13) {
+    if (event.keyCode === 13) {
         $("#btnSearchArtist").click();
     }
 }
@@ -42,70 +87,74 @@ function findById(array, value) {
 function fntFindActor(strFilter) {
 
     // reset controls states
-    var $btn = $('#btnSearchArtist').button('loading');
-
+    $('#btnSearchArtist').button('loading');
     $("#artistContainer").empty();
-    artistList = [];
-
+    globalCurrentPage = 1;
+    globalArtistList = [];
     strFilter = strFilter.replace(/[^a-zA-Z ]/g, "");
-
-    $('#alertSearch').show();
-    setTimeout(null, 1000);
-
-    if (strFilter) {
-        // controll de ajax request
-        var currentPage = 1;
-        var totalPages = 100;
-        while (currentPage <= totalPages) {
-
-            var qry = qrySearchMulti.replace('{text}', strFilter);
-            qry = qry.replace('{page}', currentPage);
-
-            $.ajaxSetup({
-                async: false
-            });
-
-            $.getJSON(qry, function (data, textStatus, jqxhr) {
-                totalPages = data.total_pages;
-                for (var i = 0; i < data.results.length; i++) {
-
-                    // only include movies and people
-                    if (data.results[i].media_type == "person" | (data.results[i].media_type == "movie" && $('#chkIncludeMovies').is(':checked')))
-                        if (!findById(artistList, data.results[i].id))
-                            artistList.push(data.results[i]);
-                }
-                currentPage++;
-            });
-        }
-
-        $.ajaxSetup({
-            async: true
-        });
-
-        artistList = artistList.sort(orderByName);
-        for (var i = 0; i < artistList.length; i++) {
-
-            if (artistList[i].media_type == "person")
-                $('#artistContainer').append(configRowArtist(artistList[i]));
-            else if (artistList[i].media_type == "movie")
-                $('#artistContainer').append(configRowMovie(artistList[i]));
-
-        }
-    }
-
-    $btn.button('reset');
-
-    $('#alertSearch').hide();
-
+    setTimeout(function () { searhArtistOrMovies(strFilter); }, 100);
     return false;
 };
 
-// render the controls
+
+function searhArtistOrMovies(strFilter) {
+    if (strFilter) {
+
+        // ajax request
+        if (globalCurrentPage <= globalTotalPages) {
+            var qry = qrySearchMulti.replace('{text}', strFilter);
+            qry = qry.replace('{page}', globalCurrentPage);
+
+            globalArtistList = [];
+            $.getJSON(qry, function (data, textStatus, jqxhr) {
+                globalTotalPages = data.total_pages;
+                for (var j = 0; j < data.results.length; j++) {
+
+                    // only include movies and people (not tv) and exclude adult titles
+                    if (data.results[j].media_type === "person" | (data.results[j].media_type === "movie" && $('#chkIncludeMovies').is(':checked')))
+                        if (!findById(globalArtistList, data.results[j].id))
+                            if (!data.results[j].adult)
+                                globalArtistList.push(data.results[j]);
+                }
+                // update current page
+                globalCurrentPage++;
+
+                // order the results for current page
+                globalArtistList = globalArtistList.sort(orderByName);
+                for (var i = 0; i < globalArtistList.length; i++) {
+
+                    // render contents
+                    if (globalArtistList[i].media_type === "person")
+                        $('#artistContainer').append(configRowArtist(globalArtistList[i]));
+                    else if (globalArtistList[i].media_type === "movie")
+                        $('#artistContainer').append(configRowMovie(globalArtistList[i]));
+                }
+            });
+        }
+    }
+    $('#btnSearchArtist').button('reset');
+}
+
+// find new movies/persons when scroll reach page bottom
+$(window).scroll(function () {
+    if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+
+        // reset controls states
+        $('#btnSearchArtist').button('loading');
+        strFilter = txtActor.value.replace(/[^a-zA-Z ]/g, "");
+        searhArtistOrMovies(strFilter);
+        return false;
+    }
+});
+
+// render the person contens
 function configRowArtist(objArtist) {
+
+    var rowArtist = "";
     if (objArtist.profile_path === undefined || objArtist.profile_path === null)
-        var rowArtist = strArtistRow.replace('{img}', 'img/photo-24-128.png');
+        rowArtist = strArtistRow.replace('{img}', 'img/photo-24-128.png');
     else
-        var rowArtist = strArtistRow.replace('{img}', strGallery + objArtist.profile_path);
+        rowArtist = strArtistRow.replace('{img}', strGallery + objArtist.profile_path);
     rowArtist = rowArtist.replace('{name}', objArtist.name);
 
     // convert the known for array to string
@@ -124,13 +173,16 @@ function configRowArtist(objArtist) {
 
     // regex to replace all names
     var pattern = "{name}";
-    re = new RegExp(pattern, "g");
-    var infoArtist = lnkArtist.replace(re, objArtist.name);
+    var re = new RegExp(pattern, "g");
+    var infoArtist = lnkWithContent.replace(re, objArtist.name);
     infoArtist = infoArtist.replace('{content}', 'loading ...');
 
+    // replace all id´s   
     pattern = "{id}";
     re = new RegExp(pattern, "g");
     infoArtist = infoArtist.replace(re, objArtist.id);
+    infoArtist = infoArtist.replace('{type}', 'Person');
+
     rowArtist = rowArtist.replace('{lnk}', infoArtist);
 
     return rowArtist;
@@ -144,6 +196,20 @@ function fntShowPopover(id) {
     });
 }
 
+// search the actor biography and whow it in a popover
+function fntFindPersonInfo(id) {
+    $.getJSON(qryPersonById.replace('{id}', id), function (data, textStatus, jqxhr) {
+        $('div#divInfo_' + id).html(data.biography);
+    });
+}
+
+// search the actor biography and whow it in a popover
+function fntFindMovieInfo(id) {
+    $.getJSON(qryMovieByID.replace('{id}', id), function (data, textStatus, jqxhr) {
+        $('div#divInfo_' + id).html(data.overview);
+    });
+}
+
 // search the movie overview and show it in a popover
 function fntShowMoviePopover(id) {
     $.getJSON(qryMovieByID.replace('{id}', id), function (data, textStatus, jqxhr) {
@@ -154,23 +220,28 @@ function fntShowMoviePopover(id) {
 
 // config the actors movies
 function configRowMovie(objMovie) {
+
+    var rowMovie = "";
     if (objMovie.poster_path === undefined || objMovie.poster_path === null)
-        var rowMovie = strMovieRow.replace('{img}', 'img/picture-128.png');
+        rowMovie = strMovieRow.replace('{img}', 'img/picture-128.png');
     else
-        var rowMovie = strMovieRow.replace('{img}', strGallery + objMovie.poster_path);
+        rowMovie = strMovieRow.replace('{img}', strGallery + objMovie.poster_path);
 
     rowMovie = rowMovie.replace('{name}', objMovie.title);
     rowMovie = rowMovie.replace('{description}', objMovie.release_date);
 
     // regex to replace all names
     var pattern = "{name}";
-    re = new RegExp(pattern, "g");
-    var infoMovie = lnkMovie.replace(re, objMovie.title);
+    var re = new RegExp(pattern, "g");
+    var infoMovie = lnkWithContent.replace(re, objMovie.title);
     infoMovie = infoMovie.replace('{content}', 'loading ...');
 
     pattern = "{id}";
     re = new RegExp(pattern, "g");
     infoMovie = infoMovie.replace(re, objMovie.id);
+
+    infoMovie = infoMovie.replace('{type}', 'Movie');
+
     rowMovie = rowMovie.replace('{lnk}', infoMovie);
 
     return rowMovie;
@@ -180,12 +251,14 @@ function configRowMovie(objMovie) {
 function fntFindMovies(selectedID) {
     document.getElementById("txtMovie").value = '';
     $('#movieContainer').empty();
-    $.getJSON("https://api.themoviedb.org/3/discover/movie?with_people=" + selectedID + "&api_key=b03963ee7a5e2836bf673677c6bcddd8", function (data, textStatus, jqxhr) {
-        moviesList = data.results;
-        moviesList.sort(orderByDate);
 
-        for (var i = 0; i < moviesList.length; i++) {
-            $('#movieContainer').append(configRowMovie(moviesList[i]));
+    var qry = qryDiscoverMovieByPeopleID.replace('{PersonID}', selectedID);
+    $.getJSON(qry, function (data, textStatus, jqxhr) {
+        globalMoviesList = data.results;
+        globalMoviesList.sort(orderByDate);
+
+        for (var i = 0; i < globalMoviesList.length; i++) {
+            $('#movieContainer').append(configRowMovie(globalMoviesList[i]));
         }
 
         $('#modalMovies').modal('show');
@@ -201,13 +274,13 @@ function fntFindTitle(strTitle) {
     var searhList = [];
 
     // select only the matched criteria 
-    for (var i = 0; i < moviesList.length; i++) {
+    for (var i = 0; i < globalMoviesList.length; i++) {
         if (strTitle) {
-            if ((moviesList[i].title.toLowerCase().search(strTitle.toLowerCase()) > -1))
-                searhList.push(moviesList[i]);
+            if ((globalMoviesList[i].title.toLowerCase().search(strTitle.toLowerCase()) > -1))
+                searhList.push(globalMoviesList[i]);
         }
         else
-            searhList.push(moviesList[i]);
+            searhList.push(globalMoviesList[i]);
     }
 
     // render the selected movies
