@@ -11,5 +11,5 @@ var lnkWithContent = "<a onclick='fntFind{type}Info({id})' data-toggle='collapse
 // api querys
 var qryPersonById = "https://api.themoviedb.org/3/person/{id}?api_key=b03963ee7a5e2836bf673677c6bcddd8";
 var qryMovieByID = "https://api.themoviedb.org/3/movie/{id}?api_key=b03963ee7a5e2836bf673677c6bcddd8";
-var qrySearchMulti = "https://api.themoviedb.org/3/search/multi?api_key=b03963ee7a5e2836bf673677c6bcddd8&query={text}&page={page}";
+var qrySearchMulti = "https://api.themoviedb.org/3/search/multi?api_key=b03963ee7a5e2836bf673677c6bcddd8&query={text}&page={page}&include_adult=false";
 var qryDiscoverMovieByPeopleID = "https://api.themoviedb.org/3/discover/movie?api_key=b03963ee7a5e2836bf673677c6bcddd8&with_people={PersonID}";

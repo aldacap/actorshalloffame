@@ -1,7 +1,6 @@
 ﻿body {
-    background-size: 100% auto; /* width and height, can be %, px or whatever. */
+    background-size: 100% auto;
     background-image: url("../img/production.jpg");
-    /*background-repeat: repeat-y;*/
     background-position: top left;
     background-attachment: fixed;
 }
@@ -13,7 +12,6 @@
 }
 
 .container {
-    /*background-image: url("../img/film.png");*/
     background-repeat: repeat-y;
     background-position: top right;
 }
@@ -81,13 +79,15 @@
     margin: 5px;
     padding: 5px;
     background: #232323;
-    /*width: 100%;*/
-    /*position: fixed;*/
-    /*left: 0;
-    right: 0;*/
     bottom: 0;
-    /*height: 50px;*/
-    /*width: 100%;*/
+    border-radius: 3px;
+}
+
+.divProgress {
+    margin: 5px;
+    padding: 5px;
+    background: #232323;
+    top: 0;
     border-radius: 3px;
 }
 
@@ -95,9 +95,7 @@
     /*position: absolute;*/
     bottom: 0;
     width: 100%;
-    /* Set the fixed height of the footer here */
     height: 60px;
-    /*background-color: #232323;*/
 }
 
 .artist-row {
@@ -105,7 +103,6 @@
     padding: 5px;
     background: #232323;
     margin: 20px;
-    /*border: 1px solid rgba(255,17,119,0.5);*/
     padding: 10px;
 }
 
@@ -128,7 +125,6 @@
     padding: 5px;
     background: #232323;
     margin: 20px;
-    /*border: 1px solid #b6ff00;*/
     padding: 10px;
 }
 
@@ -159,7 +155,7 @@
     top: 75px;
     right: 40px;
     display: none;
-    background: url('../img/up_circular.png') no-repeat 0px 20px;
+    background: url('../img/go-top.png') no-repeat 0px 20px;
 }
 
     .scrollToTop:hover {

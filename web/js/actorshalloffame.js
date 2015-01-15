@@ -2,6 +2,7 @@
 var results = [];
 var globalArtistList = [];
 var globalMoviesList = [];
+var globalIDList = [];
 
 // pagging variables
 var globalCurrentPage = 1;
@@ -11,9 +12,29 @@ var globalTotalPages = 2;
 function initPage() {
     $("#txtActor").focus();
 
+    resetFooter();
+
+    //Check to see if the window is top if not then display button
+    $(window).scroll(function () {
+        if ($(this).scrollTop() > 100) {
+            $('.scrollToTop').fadeIn();
+        } else {
+            $('.scrollToTop').fadeOut();
+        }
+    });
+
+    //Click event to scroll to top
+    $('.scrollToTop').click(function () {
+        $('html, body').animate({ scrollTop: 0 }, 800);
+        return false;
+    });
+
+}
+
+function resetFooter() {
     var footerHeight = 0,
-          footerTop = 0,
-          $footer = $("#footer");
+             footerTop = 0,
+             $footer = $("#footer");
 
     // move footer to bottom page
     positionFooter();
@@ -35,22 +56,6 @@ function initPage() {
     $(window)
             .scroll(positionFooter)
             .resize(positionFooter);
-
-    //Check to see if the window is top if not then display button
-    $(window).scroll(function () {
-        if ($(this).scrollTop() > 100) {
-            $('.scrollToTop').fadeIn();
-        } else {
-            $('.scrollToTop').fadeOut();
-        }
-    });
-
-    //Click event to scroll to top
-    $('.scrollToTop').click(function () {
-        $('html, body').animate({ scrollTop: 0 }, 800);
-        return false;
-    });
-
 }
 
 // begin query search on enter
@@ -74,9 +79,9 @@ function orderByName(a, b) {
 }
 
 // find an object in array by id
-function findById(array, value) {
-    for (var i = 0; i < array.length; i++) {
-        if (array[i].id === value) {
+function findById(id) {
+    for (var i = 0; i < globalIDList.length; i++) {
+        if (globalIDList[i] === id) {
             return true;
         }
     }
@@ -91,8 +96,12 @@ function fntFindActor(strFilter) {
     $("#artistContainer").empty();
     globalCurrentPage = 1;
     globalArtistList = [];
+    globalIDList = [];
     strFilter = strFilter.replace(/[^a-zA-Z ]/g, "");
-    setTimeout(function () { searhArtistOrMovies(strFilter); }, 100);
+    $('#divProgress').collapse('show');
+    //setTimeout(function () {
+    searhArtistOrMovies(strFilter);
+    //}, 100);
     return false;
 };
 
@@ -107,32 +116,53 @@ function searhArtistOrMovies(strFilter) {
 
             globalArtistList = [];
             $.getJSON(qry, function (data, textStatus, jqxhr) {
+
                 globalTotalPages = data.total_pages;
                 for (var j = 0; j < data.results.length; j++) {
 
-                    // only include movies and people (not tv) and exclude adult titles
+                    // only include movies and people (not tv) 
                     if (data.results[j].media_type === "person" | (data.results[j].media_type === "movie" && $('#chkIncludeMovies').is(':checked')))
-                        if (!findById(globalArtistList, data.results[j].id))
-                            if (!data.results[j].adult)
+
+                        // exclude adult titles
+                        if (!data.results[j].adult) {
+                            if (!findById(data.results[j].id)) {
                                 globalArtistList.push(data.results[j]);
+                                globalIDList.push(data.results[j].id);
+                            }
+                        }
                 }
                 // update current page
                 globalCurrentPage++;
+
+                // search again if not found results
+                if (globalArtistList.length === 0)
+                    setTimeout(function () { searhArtistOrMovies(strFilter); }, 100);
 
                 // order the results for current page
                 globalArtistList = globalArtistList.sort(orderByName);
                 for (var i = 0; i < globalArtistList.length; i++) {
 
                     // render contents
-                    if (globalArtistList[i].media_type === "person")
+                    if (globalArtistList[i].media_type === "person") {
                         $('#artistContainer').append(configRowArtist(globalArtistList[i]));
-                    else if (globalArtistList[i].media_type === "movie")
+                        globalIDList.push(globalArtistList[i].id);
+                    }
+                    else if (globalArtistList[i].media_type === "movie") {
                         $('#artistContainer').append(configRowMovie(globalArtistList[i]));
+                        globalIDList.push(globalArtistList[i].id);
+                    }
                 }
+
+                $('#divProgress').collapse('hide');
+                $('#btnSearchArtist').button('reset');
+
+                // move footer to bottom page
+                resetFooter();
+
             });
         }
     }
-    $('#btnSearchArtist').button('reset');
+    //$('#btnSearchArtist').button('reset');
 }
 
 // find new movies/persons when scroll reach page bottom
@@ -141,6 +171,7 @@ $(window).scroll(function () {
 
         // reset controls states
         $('#btnSearchArtist').button('loading');
+        $('#divProgress').collapse('show');
         strFilter = txtActor.value.replace(/[^a-zA-Z ]/g, "");
         searhArtistOrMovies(strFilter);
         return false;
@@ -149,6 +180,11 @@ $(window).scroll(function () {
 
 // render the person contens
 function configRowArtist(objArtist) {
+
+    var existingRowPerson = document.getElementById('divContent_' + objArtist.id);
+    if (existingRowPerson) {
+        return '';
+    }
 
     var rowArtist = "";
     if (objArtist.profile_path === undefined || objArtist.profile_path === null)
@@ -186,6 +222,7 @@ function configRowArtist(objArtist) {
     rowArtist = rowArtist.replace('{lnk}', infoArtist);
 
     return rowArtist;
+
 }
 
 // search the actor biography and whow it in a popover
@@ -220,6 +257,11 @@ function fntShowMoviePopover(id) {
 
 // config the actors movies
 function configRowMovie(objMovie) {
+
+    var existingRowMovie = document.getElementById('divContent_' + objMovie.id);
+    if (existingRowMovie) {
+        return '';
+    }
 
     var rowMovie = "";
     if (objMovie.poster_path === undefined || objMovie.poster_path === null)
