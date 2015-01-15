@@ -56,6 +56,7 @@ function resetFooter() {
     $(window)
             .scroll(positionFooter)
             .resize(positionFooter);
+
 }
 
 // begin query search on enter
@@ -95,6 +96,7 @@ function fntFindActor(strFilter) {
     $('#btnSearchArtist').button('loading');
     $("#artistContainer").empty();
     globalCurrentPage = 1;
+    globalTotalPages = 2;
     globalArtistList = [];
     globalIDList = [];
     strFilter = strFilter.replace(/[^a-zA-Z ]/g, "");
@@ -110,7 +112,7 @@ function searhArtistOrMovies(strFilter) {
     if (strFilter) {
 
         // ajax request
-        if (globalCurrentPage <= globalTotalPages) {
+        if (globalCurrentPage < globalTotalPages) {
             var qry = qrySearchMulti.replace('{text}', strFilter);
             qry = qry.replace('{page}', globalCurrentPage);
 
@@ -153,27 +155,32 @@ function searhArtistOrMovies(strFilter) {
                     }
                 }
 
-                $('#divProgress').collapse('hide');
-                $('#btnSearchArtist').button('reset');
-
                 // move footer to bottom page
                 resetFooter();
+                $('#divProgress').collapse('hide');
+                $('#btnSearchArtist').button('reset');
 
             });
         }
     }
-    //$('#btnSearchArtist').button('reset');
+
+    if (globalCurrentPage > globalTotalPages) {
+        $('#divProgress').collapse('hide');
+        $('#btnSearchArtist').button('reset');
+    }
 }
 
 // find new movies/persons when scroll reach page bottom
 $(window).scroll(function () {
     if ($(window).scrollTop() == $(document).height() - $(window).height()) {
 
-        // reset controls states
-        $('#btnSearchArtist').button('loading');
-        $('#divProgress').collapse('show');
-        strFilter = txtActor.value.replace(/[^a-zA-Z ]/g, "");
-        searhArtistOrMovies(strFilter);
+        if (globalCurrentPage < globalTotalPages) {
+            // reset controls states
+            $('#btnSearchArtist').button('loading');
+            $('#divProgress').collapse('show');
+            strFilter = txtActor.value.replace(/[^a-zA-Z ]/g, "");
+            searhArtistOrMovies(strFilter);
+        }
         return false;
     }
 });
@@ -226,24 +233,9 @@ function configRowArtist(objArtist) {
 }
 
 // search the actor biography and whow it in a popover
-function fntShowPopover(id) {
-    $.getJSON(qryPersonById.replace('{id}', id), function (data, textStatus, jqxhr) {
-        $('a#lnk_' + id).attr("data-content", data.biography);
-        $('a#lnk_' + id).popover("show");
-    });
-}
-
-// search the actor biography and whow it in a popover
 function fntFindPersonInfo(id) {
     $.getJSON(qryPersonById.replace('{id}', id), function (data, textStatus, jqxhr) {
         $('div#divInfo_' + id).html(data.biography);
-    });
-}
-
-// search the actor biography and whow it in a popover
-function fntFindMovieInfo(id) {
-    $.getJSON(qryMovieByID.replace('{id}', id), function (data, textStatus, jqxhr) {
-        $('div#divInfo_' + id).html(data.overview);
     });
 }
 

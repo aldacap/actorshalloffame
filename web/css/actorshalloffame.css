@@ -143,17 +143,15 @@
     }
 
 .scrollToTop {
-    width: 130px;
-    height: 130px;
+    width: 64px;
+    height: 64px;
     padding: 10px;
     text-align: center;
-    background: whiteSmoke;
-    font-weight: bold;
     color: #444;
     text-decoration: none;
     position: fixed;
-    top: 75px;
-    right: 40px;
+    bottom: 64px;
+    right: 64px;
     display: none;
     background: url('../img/go-top.png') no-repeat 0px 20px;
 }
