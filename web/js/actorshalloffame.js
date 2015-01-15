@@ -239,11 +239,10 @@ function fntFindPersonInfo(id) {
     });
 }
 
-// search the movie overview and show it in a popover
-function fntShowMoviePopover(id) {
+// search the actor biography and whow it in a popover
+function fntFindMovieInfo(id) {
     $.getJSON(qryMovieByID.replace('{id}', id), function (data, textStatus, jqxhr) {
-        $('a#lnk_' + id).attr("data-content", data.overview);
-        $('a#lnk_' + id).popover("show");
+        $('div#divInfo_' + id).html(data.overview);
     });
 }
 
